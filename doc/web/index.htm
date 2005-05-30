@@ -1,0 +1,95 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>What is OpenParport  - OpenParport</title>
+</head>
+
+<body>
+
+<p></p>
+<hr size="1" noshade>
+<a class="tabselect" href="http://sourceforge.net/projects/winparport/">Summary</a> |&nbsp; 
+<a class="tabs" href="http://winparport.sourceforge.net">Home Page</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/forum/?group_id=139749">Forums</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/tracker/?group_id=139749">Tracker</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/tracker/?group_id=139749&atid=744470">Bugs</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/tracker/?group_id=139749&atid=744471">Support</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/news/?group_id=139749">News</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/cvs/?group_id=139749">CVS</a> |&nbsp;
+<a class="tabs" href="http://sourceforge.net/project/showfiles.php?group_id=139749">Files</a> |
+<hr size="1" noshade><br>
+
+<p align="left"><b>What is OpenParport</b><br>
+<br>
+- OpenParport is a device driver that provides a low-level access to parallel port 
+for any user mode application. Low-level means that driver provides unrestricted 
+access to I/O addresses related to standard parallel port. It also emulates some 
+proprietary driver API, often used for parallel port access by JTAG software.<br>
+- OpenParport is the driver when you need to access your LPT port as a bucket of 
+pins, rather then a communication port. Typical applications are JTAG cables, LCD 
+panels, buttons, sensors, etc.<br>
+- OpenParport is the single driver that, once installed, will provide access to 
+parallel port to all your applications, eliminating all driver conflicts you had 
+before.<br>
+<br>
+<b>What OpenParport is not</b><br>
+<br>
+- It is not a replacement for default driver. It does not support even standard 
+communication protocol, not to mention ECP / EPP. OpenParport is a driver to set 
+individual bits on your LPT socket, nothing more.<br>
+- It is not a universal I/O access library. Wile driver APIs take a port address 
+as an argument, only access to port ranges 0x378-0x37C and 0x278-0x27C is allowed.<br>
+- It is not a PnP driver. It will not register with PnP subsystem (meaning you won’t 
+see it in device manager tree), and won’t even claim IO port address range. So your 
+standard parallel port driver will be loaded at the same time, and if you decide 
+to set up a printer on LPT port while you program flash memory over JTAG cable – 
+that will be your choice and driver won’t stop you.<br>
+- It is not a flexible enterprise-level access-controlled service provider. Every 
+single application and every single user have necessary rights to call this driver 
+API. If you have some special device and need a flexible access control – write 
+a special driver for it.<br>
+<br>
+<b>Accessing the driver</b><br>
+<br>
+There are multiple ways to access OpenParport driver.<br>
+<br>
+- Using &lt;ppdev.h&gt; API. This is preferred method. Just include &lt;ppdev/ppdev.h&gt; and 
+change function names of 3 functions ( ‘open’, ‘close’, ‘ioctl’) in your code – 
+and get a subset of Linux /dev/ppdev functionality related to low-level parallel 
+port access. This is the most portable way.<br>
+- OpenParport driver emulates (a really small) subset of WinDrv driver API. WinDrv 
+is a driver that allows near unlimited low-level IO access from user mode applications, 
+and is very popular among JTAG software vendors. This method exists only to support 
+proprietary software that cannot be modified, therefore using this access method 
+is not recommended.<br>
+- Package includes a dlportio.dll library, which emulates port access API of DriverLINX 
+Port I/O Driver Interface. If you already have software that uses this driver, merely 
+replacing dlportio.dll with a version that comes with this driver will switch it 
+to use OpenParport driver.<br>
+<br>
+<b>Installing the driver</b><br>
+<br>
+Following steps outline driver install:<br>
+<br>
+- Go to control panel, “Add new hardware”<br>
+- Add new device, device connected<br>
+- Skip all devices and select “Add new device” option at the very end of list<br>
+- Select “All devices”, advanced. Your goal is to get “Have disk” button<br>
+- Select “Have disk” and specify path to INF file<br>
+- Continue with “Next” button and eventually driver will be installed<br>
+<br>
+<br>
+<b>Miscellaneous tips</b><br>
+<br>
+- To disable WinDrvr forced auto-install by Xilinx IMPACT software, set environment 
+variable XIL_IMPACT_AUTOINSTALL_WINDRIVER=false<br>
+<br>
+&nbsp;</p>
+<a href="http://sourceforge.net">
+<img src="http://sourceforge.net/sflogo.php?group_id=139749&type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>
+
+<a href="http://sourceforge.net/donate/index.php?group_id=139749"><img src="http://images.sourceforge.net/images/project-support.jpg" width="88" height="32" border="0" alt="Support This Project" /> </a>
+</body>
+
+</html>
