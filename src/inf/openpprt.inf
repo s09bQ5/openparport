@@ -1,0 +1,44 @@
+[Version]
+Signature=$CHICAGO$ 
+Class=System
+ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider = %MfgName%
+DriverVer = 05/30/2005
+
+[SourceDisksNames]
+1 = "Disk #1"
+
+[SourceDisksFiles]
+openpprt.sys = 1
+
+[DestinationDirs]
+DefaultDestDir=12 ; DIRID_DRIVERS
+
+[Manufacturer]
+%MfgName% = OpenParport
+
+[OpenParport]
+%DriverName% = InstallOpenParport, OpenParportFakeId
+
+
+[InstallOpenParport]
+CopyFiles = OpenParportSYS
+
+[OpenParportSYS]
+openpprt.sys
+
+[InstallOpenParport.Services]
+AddService = openpprt, 0x00000002, openpprt-Service
+ 
+[openpprt-Service]
+DisplayName    = %ServiceDesc%
+ServiceType    = 1
+StartType      = 1
+ErrorControl   = 1
+ServiceBinary  = %11%\Drivers\openpprt.sys
+
+[Strings]
+MfgName = "OpenParport"
+DriverName = "Open Low-level parallel port access driver"
+ServiceDesc = "Open parallel port driver"
+

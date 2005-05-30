@@ -1,0 +1,11 @@
+TARGETNAME=openpprt
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+
+INCLUDES=\
+	..\include
+
+SOURCES=\
+	main.c \
+	ioctl.c \
+	windrv.c \

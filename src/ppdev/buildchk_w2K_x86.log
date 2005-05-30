@@ -1,0 +1,18 @@
+BUILD: Examining q:\projects\winparport\cvs\src\ppdev directory for files to compile.
+Compiling (NoSync) q:\projects\winparport\cvs\src\ppdev directory ********************
+1>'nmake.exe /nologo BUILDMSG=Stop. -i NTTEST= UMTEST= NOLINK=1 PASS1_NOLIB=1 386=1'
+1>BUILDMSG: Processing q:\projects\winparport\cvs\src\ppdev
+1>cl -nologo -Ii386\ -I. -IH:\WINDDK~1.183\inc\mfc42 -I..\include -Iobjchk_w2K_x86\i386 -IH:\WINDDK~1.183\inc\w2K -IH:\WINDDK~1.183\inc\w2K -IH:\WINDDK~1.183\inc\crt -D_X86_=1 -Di386=1  -DSTD_CALL -DCONDITION_HANDLING=1   -DNT_INST=0 -DWIN32=100 -D_NT1X_=100 -DWINNT=1 -D_WIN32_WINNT=0x0500 /DWINVER=0x0500 -D_WIN32_IE=0x0501    -DWIN32_LEAN_AND_MEAN=1 -DDEVL=1 -DDBG=1 -D__BUILDMACHINE__=WinDDK -DFPO=0  -DNDEBUG  -DVER_MAJOR=0  -DVER_MINOR=2     /c /Zl /Zp8 /Gy /Gm-  /W3 /WX /Gz  /GX-  /GR- /GF /GS /G6 /Ze /Gi- /QIfdiv- /hotpatch -Z7 /Od /Oi  /Oy-   -FIH:\WINDDK~1.183\inc\w2K\warning.h   .\ppdevw.c 
+1>ppdevw.c
+1>
+1>Stop.
+Compiling  q:\projects\winparport\cvs\src\ppdev directory ********************
+100>'nmake.exe /nologo BUILDMSG=Stop. -i NTTEST= UMTEST= NOLINK=1 386=1'
+100>BUILDMSG: Processing q:\projects\winparport\cvs\src\ppdev
+100>	lib -out:objchk_w2K_x86\i386\ppdevw.lib -IGNORE:4198,4010,4037,4039,4065,4070,4078,4087,4089,4221  /WX -nodefaultlib -machine:ix86 @h:\Temp\nm320.tmp
+100>Microsoft (R) Library Manager Version 7.10.4035
+100>Copyright (C) Microsoft Corporation.  All rights reserved.
+100>
+100>objchk_w2K_x86\i386\ppdevw.obj 
+100>
+100>Stop.

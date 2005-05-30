@@ -1,0 +1,12 @@
+TARGETNAME=ppdevw
+TARGETPATH=obj
+TARGETTYPE=LIBRARY
+
+INCLUDES=\
+	..\include
+
+SOURCES=\
+	ppdevw.c
+
+
+

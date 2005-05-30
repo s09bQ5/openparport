@@ -1,0 +1,15 @@
+TARGETNAME=dlportio
+TARGETPATH=obj
+TARGETTYPE=DYNLINK
+
+INCLUDES=\
+	..\include
+
+SOURCES=\
+	dlportio.c
+
+DLLENTRY=DllMain
+
+TARGETLIBS=\
+	$(SDK_LIB_PATH)\kernel32.lib
+

@@ -1,0 +1,28 @@
+MUI_386_OBJECTS=
+
+386_OBJECTS= \
+    $(_OBJ_DIR)\i386\main.obj \
+    $(_OBJ_DIR)\i386\ioctl.obj \
+    $(_OBJ_DIR)\i386\windrv.obj
+
+MUI_IA64_OBJECTS=
+
+IA64_OBJECTS= \
+    $(_OBJ_DIR)\ia64\main.obj \
+    $(_OBJ_DIR)\ia64\ioctl.obj \
+    $(_OBJ_DIR)\ia64\windrv.obj
+
+MUI_AMD64_OBJECTS=
+
+AMD64_OBJECTS= \
+    $(_OBJ_DIR)\amd64\main.obj \
+    $(_OBJ_DIR)\amd64\ioctl.obj \
+    $(_OBJ_DIR)\amd64\windrv.obj
+
+MUI_ARM_OBJECTS=
+
+ARM_OBJECTS= \
+    $(_OBJ_DIR)\arm\main.obj \
+    $(_OBJ_DIR)\arm\ioctl.obj \
+    $(_OBJ_DIR)\arm\windrv.obj
+

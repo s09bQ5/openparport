@@ -1,0 +1,82 @@
+<HTML><HEAD>
+<meta NAME="GENERATOR" CONTENT="ChkInf">
+<TITLE>Summary of ChkInf results for .\openpprt.inf</TITLE></HEAD>
+<BODY VLINK=#000000>
+<H1>Summary of "<FONT COLOR=#990099>.\openpprt.inf</FONT>"</H1>
+<TABLE CELLSPACING=0 CELLPADDING=0 BORDER=0>
+	<TR><TD><H3><A HREF="#ERRORS">Total Errors:</A></TD>
+	    <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+	    <TD ALIGN=RIGHT><H3><FONT COLOR=RED>1</FONT></TD></TR>
+	<TR><TD><H3><A HREF="#WARNINGS">Total Warnings:</A></TD>
+	    <TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+	    <TD ALIGN=RIGHT><H3><FONT COLOR=BLUE>4</FONT></TD></TR>
+</TABLE><BR>
+	<HR>
+	<FONT COLOR=RED><H3><A NAME="ERRORS">Errors:</A></H3>
+		<LI><A HREF="#Lnum1">Line 1</A>: (E22.1.1081) Directive: CatalogFile required (and must not be blank) in section [Version] for WHQL digital signature. 
+	</FONT>
+	<HR>
+	<FONT COLOR=BLUE><H3><A NAME="WARNINGS">Warnings:</A></H3>
+		<LI><A HREF="#Lnum0">Line 0</A>: (W22.1.2212) No Copyright information found. 
+		<LI><A HREF="#Lnum6">Line 6</A>: (W22.1.2025) No value for Version (DriverVer=mm/dd/yyyy,version). 
+		<LI><A HREF="#Lnum9">Line 9</A>: (W22.1.2023) Use a string token, and put localizable text in the [Strings] section. 
+		<LI><A HREF="#Lnum37">Line 37</A>: (W22.1.2027) StartType of 1 should only be specified by drivers that may detect legacy hardware. 
+	</FONT>
+	<BR><HR>
+<H3>Annotated INF:</H3>
+<PRE>
+<A NAME="Lnum0">
+<FONT COLOR=BLUE>; (W22.1.2212) No Copyright information found. 
+</FONT><A NAME="Lnum1">[Version]</A>
+<FONT COLOR=RED>; (E22.1.1081) Directive: CatalogFile required (and must not be blank) in section [Version] for WHQL digital signature. 
+</FONT><A NAME="Lnum2">Signature=$CHICAGO$ </A>
+<A NAME="Lnum3">Class = Ports</A>
+<A NAME="Lnum4">ClassGuid = {4d36e978-e325-11ce-bfc1-08002be10318}</A>
+<A NAME="Lnum5">Provider = %MfgName%</A>
+<A NAME="Lnum6">DriverVer = 05/30/2005</A>
+<FONT COLOR=BLUE>; (W22.1.2025) No value for Version (DriverVer=mm/dd/yyyy,version). 
+</FONT><A NAME="Lnum7"></A>
+<A NAME="Lnum8">[SourceDisksNames]</A>
+<A NAME="Lnum9">1 = "Disk #1"</A>
+<FONT COLOR=BLUE>; (W22.1.2023) Use a string token, and put localizable text in the [Strings] section. 
+</FONT><A NAME="Lnum10"></A>
+<A NAME="Lnum11">[SourceDisksFiles]</A>
+<A NAME="Lnum12">openpprt.sys = 1</A>
+<A NAME="Lnum13"></A>
+<A NAME="Lnum14">[DestinationDirs]</A>
+<A NAME="Lnum15">DefaultDestDir=12 ; DIRID_DRIVERS</A>
+<A NAME="Lnum16"></A>
+<A NAME="Lnum17">[Manufacturer]</A>
+<A NAME="Lnum18">%MfgName% = OpenParport</A>
+<A NAME="Lnum19"></A>
+<A NAME="Lnum20">[OpenParport]</A>
+<A NAME="Lnum21">%DriverName% = InstallOpenParport, OpenParportFakeId</A>
+<A NAME="Lnum22"></A>
+<A NAME="Lnum23"></A>
+<A NAME="Lnum24">[InstallOpenParport]</A>
+<A NAME="Lnum25">CopyFiles = OpenParportSYS</A>
+<A NAME="Lnum26"></A>
+<A NAME="Lnum27">[OpenParportSYS]</A>
+<A NAME="Lnum28">openpprt.sys</A>
+<A NAME="Lnum29"></A>
+<A NAME="Lnum30"></A>
+<A NAME="Lnum31">[InstallOpenParport.Services]</A>
+<A NAME="Lnum32">AddService = openpprt, 0x00000002, openpprt-Service</A>
+<A NAME="Lnum33"> </A>
+<A NAME="Lnum34">[openpprt-Service]</A>
+<A NAME="Lnum35">DisplayName    = %ServiceDesc%</A>
+<A NAME="Lnum36">ServiceType    = 1</A>
+<A NAME="Lnum37">StartType      = 1</A>
+<FONT COLOR=BLUE>; (W22.1.2027) StartType of 1 should only be specified by drivers that may detect legacy hardware. 
+</FONT><A NAME="Lnum38">ErrorControl   = 1</A>
+<A NAME="Lnum39">ServiceBinary  = %11%\Drivers\openpprt.sys</A>
+<A NAME="Lnum40"></A>
+<A NAME="Lnum41">[Strings]</A>
+<A NAME="Lnum42">MfgName = "OpenParport"</A>
+<A NAME="Lnum43">DriverName = "Open Low-level parallel port access driver"</A>
+<A NAME="Lnum44">ServiceDesc = "Open parallel port driver"</A>
+<A NAME="Lnum45"></A>
+<A NAME="Lnum46"></A>
+<A NAME="Lnum47"></A>
+</PRE>
+</PRE>

@@ -1,0 +1,4 @@
+DIRS=\
+	driver \
+	ppdev \
+	dlportio \
