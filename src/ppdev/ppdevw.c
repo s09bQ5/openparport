@@ -21,14 +21,14 @@
  *   /dev/ppdev user-mode emulation code
  *
  */
+#include <windows.h>
 #include <ppdev/ppdev.h>
-#include <opapi.h>
+#include <ppapi.h>
 
 typedef struct _PP_handle
 {
     volatile LONG   Busy;
     HANDLE          Device;
-    BOOL            FirstPort;
     UCHAR           LastCtrl;
 } PP_handle;
 
@@ -64,14 +64,14 @@ int PP_open(const char *filename,int oflag,...)
     // We care only about last digit in the file name.
     //
     if ('1'==filename[strlen(filename)-1]) {
-        phandle->FirstPort = FALSE;
+        i=1;
     } else {
-        phandle->FirstPort = TRUE;
+        i=0;
     }
 
-    phandle->Device = OPOpen();
+    phandle->Device = PPOpen(i);
 
-    if (INVALID_HANDLE_VALUE==phandle->Device) {
+    if (NULL==phandle->Device) {
         phandle->Busy=0;
         return -1;
     }
@@ -101,14 +101,9 @@ int PP_close(int handle)
     return 0;
 }
 
-static int PPReadByte(PP_handle *phandle,int offset,unsigned char *data)
+static int PPReadByte(PP_handle *phandle,unsigned char *data)
 {
-    OP_IOCTL_READ_BYTE  rb;
-    DWORD   dwTransferred;
-
-    rb.Address = offset + (phandle->FirstPort?0x378:0x278);
-
-    if (0==DeviceIoControl(phandle->Device,IOCTL_OP_IOCTL_READ_BYTE,&rb,sizeof(rb),data,1,&dwTransferred,NULL)) {
+    if (0==PPRead(phandle->Device,data)) {
         return -1;
     }
 
@@ -117,13 +112,7 @@ static int PPReadByte(PP_handle *phandle,int offset,unsigned char *data)
 
 static int PPWriteByte(PP_handle *phandle,int offset,unsigned char data)
 {
-    OP_IOCTL_WRITE_BYTE  wb;
-    DWORD   dwTransferred;
-
-    wb.Address = offset + (phandle->FirstPort?0x378:0x278);
-    wb.Value = data;
-
-    if (0==DeviceIoControl(phandle->Device,IOCTL_OP_IOCTL_WRITE_BYTE,&wb,sizeof(wb),NULL,0,&dwTransferred,NULL)) {
+    if (0==PPWrite(phandle->Device,(UCHAR)offset,data)) {
         return -1;
     }
 
@@ -191,7 +180,7 @@ int PP_ioctl(int handle,int code,...)
         //  Actual emulated IOCTLs
         //
         case PPRSTATUS:
-            return PPReadByte(phandle,1,p3);
+            return PPReadByte(phandle,p3);
 
         case PPRCONTROL:
             *p3 = phandle->LastCtrl;
@@ -215,7 +204,7 @@ int PP_ioctl(int handle,int code,...)
             return err;
 
         case PPRDATA :
-            return PPReadByte(phandle,0,p3);
+            return 0;
 
         case PPWDATA:
             return PPWriteByte(phandle,0,*p3); 

@@ -3,6 +3,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
 <title>What is OpenParport  - OpenParport</title>
+<style>
+<!--
+h3
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:13.0pt;
+	font-family:Arial}
+-->
+</style>
 </head>
 
 <body>
@@ -18,74 +30,80 @@
 <a class="tabs" href="http://sourceforge.net/news/?group_id=139749">News</a> |&nbsp;
 <a class="tabs" href="http://sourceforge.net/cvs/?group_id=139749">CVS</a> |&nbsp;
 <a class="tabs" href="http://sourceforge.net/project/showfiles.php?group_id=139749">Files</a> |
-<hr size="1" noshade><br>
+<hr size="1" noshade><p><b>News: 3-Jul-2005</b></p>
+Winparport library version 0.5 released. Main change is that original 
+openparport.sys driver is deprecated (since OS provides a built-in way to access 
+parallel port). Still considered beta, however the library was used excessively 
+for over a month now.<p>&nbsp;</p>
 
-<p align="left"><b>What is OpenParport</b><br>
-<br>
-- OpenParport is a device driver that provides a low-level access to parallel port 
-for any user mode application. Low-level means that driver provides unrestricted 
-access to I/O addresses related to standard parallel port. It also emulates some 
-proprietary driver API, often used for parallel port access by JTAG software.<br>
-- OpenParport is the driver when you need to access your LPT port as a bucket of 
-pins, rather then a communication port. Typical applications are JTAG cables, LCD 
-panels, buttons, sensors, etc.<br>
-- OpenParport is the single driver that, once installed, will provide access to 
-parallel port to all your applications, eliminating all driver conflicts you had 
-before.<br>
-<br>
-<b>What OpenParport is not</b><br>
-<br>
-- It is not a replacement for default driver. It does not support even standard 
-communication protocol, not to mention ECP / EPP. OpenParport is a driver to set 
-individual bits on your LPT socket, nothing more.<br>
-- It is not a universal I/O access library. Wile driver APIs take a port address 
-as an argument, only access to port ranges 0x378-0x37C and 0x278-0x27C is allowed.<br>
-- It is not a PnP driver. It will not register with PnP subsystem (meaning you won’t 
-see it in device manager tree), and won’t even claim IO port address range. So your 
-standard parallel port driver will be loaded at the same time, and if you decide 
-to set up a printer on LPT port while you program flash memory over JTAG cable – 
-that will be your choice and driver won’t stop you.<br>
-- It is not a flexible enterprise-level access-controlled service provider. Every 
-single application and every single user have necessary rights to call this driver 
-API. If you have some special device and need a flexible access control – write 
-a special driver for it.<br>
-<br>
-<b>Accessing the driver</b><br>
-<br>
-There are multiple ways to access OpenParport driver.<br>
-<br>
-- Using &lt;ppdev.h&gt; API. This is preferred method. Just include &lt;ppdev/ppdev.h&gt; and 
-change function names of 3 functions ( ‘open’, ‘close’, ‘ioctl’) in your code – 
-and get a subset of Linux /dev/ppdev functionality related to low-level parallel 
-port access. This is the most portable way.<br>
-- OpenParport driver emulates (a really small) subset of WinDrv driver API. WinDrv 
-is a driver that allows near unlimited low-level IO access from user mode applications, 
-and is very popular among JTAG software vendors. This method exists only to support 
-proprietary software that cannot be modified, therefore using this access method 
-is not recommended.<br>
-- Package includes a dlportio.dll library, which emulates port access API of DriverLINX 
-Port I/O Driver Interface. If you already have software that uses this driver, merely 
-replacing dlportio.dll with a version that comes with this driver will switch it 
-to use OpenParport driver.<br>
-<br>
-<b>Installing the driver</b><br>
-<br>
-Following steps outline driver install:<br>
-<br>
-- Go to control panel, “Add new hardware”<br>
-- Add new device, device connected<br>
-- Skip all devices and select “Add new device” option at the very end of list<br>
-- Select “All devices”, advanced. Your goal is to get “Have disk” button<br>
-- Select “Have disk” and specify path to INF file<br>
-- Continue with “Next” button and eventually driver will be installed<br>
-<br>
-<br>
-<b>Miscellaneous tips</b><br>
-<br>
-- To disable WinDrvr forced auto-install by Xilinx IMPACT software, set environment 
-variable XIL_IMPACT_AUTOINSTALL_WINDRIVER=false<br>
-<br>
-&nbsp;</p>
+
+
+<hr size="1" noshade><p><b>News: 2-Jun-2005</b></p>
+<p>Today I learned that bit-level parallel port access is indeed possible on 
+windows without any additional drivers installation. This fact is of paramount 
+importance. The default mechanism is actually pretty complete, it supports 
+exclusive port locking and allows port access even for non-administrators. In 
+spite of this knowledge, project is going to change in following way:</p>
+<ul>
+	<li>The openpprt.sys driver will be killed for good.</li>
+	<li>All existing libraries will be changed while maintaining as much API 
+	compatibility as possible to support this access method. It means that one 
+	can use &lt;ppdev/ppdev.h&gt; or other emulated APIs without any special driver 
+	installation. Or one can just copy dlportio.dll and get working application 
+	without any kernel-mode mess. This will be major step forward, since now any 
+	program that requires parallel port access also requires driver 
+	installation. Not anymore.</li>
+</ul>
+<p>These changes are coming soon, stay tuned.</p>
+
+
+
+<hr size="1" noshade>
+<h3><span lang="EN-US">Windows parallel port access library</span></h3>
+<p class="MsoNormal" style="margin-left:.25in;text-indent:17.4pt">
+<span lang="EN-US">This library allows direct low-level parallel port access. 
+You’ll certainly need this library when you need to access your LPT port as a 
+bucket of pins, rather then a communication port. Typical applications are JTAG 
+cables, LCD panels, buttons, sensors, etc. </span><b>
+<span lang="EN-US" style="font-size: 14.0pt">This library does not require 
+installation of any special drivers of any kind, nor it installs any drivers 
+behind the scene or even needs administrative privileges</span></b><span lang="EN-US">. 
+To my best knowledge this is the only library of that kind. </span></p>
+<h3><span lang="EN-US">Operation</span></h3>
+<p class="MsoNormal" style="margin-left:.25in;text-indent:17.4pt">
+<span lang="EN-US">Library utilizes Windows built-in mechanism for accessing 
+parallel ports. It automatically claims parallel port for exclusive access 
+during I/O operations and is fully aware of spooler and parallel port class 
+driver.</span></p>
+<h3><span lang="EN-US">Accessing the parallel port</span></h3>
+<p class="MsoNormal"><span lang="EN-US">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; There are multiple ways to 
+access OpenParport driver.</span></p>
+<p class="MsoNormal" style="text-indent: -.25in; margin-left: .5in">
+<span lang="EN-US" style="font-family: Arial">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang="EN-US">Using &lt;ppdev.h&gt; API. This is preferred method. 
+Just include &lt;ppdev/ppdev.h&gt; and change function names of 3 functions ( ‘open’, 
+‘close’, ‘ioctl’) in your code – and get a subset of Linux /dev/ppdev 
+functionality related to low-level parallel port access. &nbsp;This is the most 
+portable way.</span></p>
+<p class="MsoNormal" style="text-indent: -.25in; margin-left: .5in">
+<span lang="EN-US" style="font-family: Arial">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang="EN-US">File &lt;ppapi.h&gt; contains all definitions to 
+access parallel port device. This file is heavily windows-specific.</span></p>
+<p class="MsoNormal" style="text-indent: -.25in; margin-left: .5in">
+<span lang="EN-US" style="font-family: Arial">-<span style="font:7.0pt &quot;Times New Roman&quot;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang="EN-US">Package includes a dlportio.dll library, which 
+emulates port access API of DriverLINX Port I/O Driver Interface. If you already 
+have software that uses this driver, merely replacing dlportio.dll with a 
+version that comes with this driver will switch it to use WinParport library.&nbsp;</span></p>
+<h3><span lang="EN-US">Additional stuff</span></h3>
+<p class="MsoNormal">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<span lang="EN-US">This package includes a driver (along with install program) 
+called paraccel.sys . Do not install that driver unless you absolutely have to. 
+This driver is optional, it adds no additional functionality. However it makes 
+the current Windows built-in parallel port driver to work significantly faster. 
+This may be useful if you transfer a lot of data via parallel port cable. Read 
+paraccel.rtf file for explanation how it works.</span></p>
+<p class="MsoNormal" style="text-indent:35.4pt"><span lang="EN-US">&nbsp;</span></p>
 <a href="http://sourceforge.net">
 <img src="http://sourceforge.net/sflogo.php?group_id=139749&type=1" width="88" height="31" border="0" alt="SourceForge.net Logo" /></a>
 

@@ -21,25 +21,14 @@
  *   /dev/ppdev Win32-specific user-mode emulation code
  *
  */
-#include <windows.h>
 
-#ifndef _IOW
-#define _IOW(a,b,c) (b)
-#endif
+#define x_IOW(a,b,c) (b)
+#define x_IOR(a,b,c) (b)
+#define x_IO(a,b) (b)
+#define xOBSOLETE__IOW(a,b,c)    x_IOW(a,b,c)
+#define xOBSOLETE__IOR(a,b,c)    x_IOR(a,b,c)
 
-#ifndef _IOR
-#define _IOR(a,b,c) (b)
-#endif
-
-#ifndef _IO
-#define _IO(a,b) (b)
-#endif
-
-
-#define OBSOLETE__IOW(a,b,c)    _IOW(a,b,c)
-#define OBSOLETE__IOR(a,b,c)    _IOR(a,b,c)
-
-int PP_open(const char *filename,int oflag,...);
-int PP_close(int handle);
-int PP_ioctl(int handle,int code,...);
+int WINAPI PP_open(const char *filename,int oflag,...);
+int WINAPI PP_close(int handle);
+int WINAPI PP_ioctl(int handle,int code,...);
 

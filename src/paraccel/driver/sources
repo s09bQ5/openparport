@@ -1,11 +1,10 @@
-TARGETNAME=openpprt
+TARGETNAME=paraccel
 TARGETPATH=obj
 TARGETTYPE=DRIVER
 
 INCLUDES=\
-	..\include
+	$(DDK_INC_PATH)\..;
+
 
 SOURCES=\
 	main.c \
-	ioctl.c \
-	windrv.c \

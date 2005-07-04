@@ -23,25 +23,12 @@
  */
 #include <windows.h>
 #include <winioctl.h>
-#include <opioctl.h>
+#include <ppapi.h>
 
+static ULONG  DeviceBase=0;
 static HANDLE Device=NULL;
-
-static
-HANDLE WINAPI OPOpen()
-{
-    HANDLE h = CreateFileW(
-        OP_UM_DEVICE_NAME,
-        GENERIC_READ|GENERIC_WRITE,
-        FILE_SHARE_READ|FILE_SHARE_WRITE,
-        NULL,
-        OPEN_EXISTING,
-        0,
-        NULL);
-
-
-    return h;
-}
+static UCHAR  CtrlShadow=0;
+static UCHAR  DataShadow=0;
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
@@ -49,39 +36,95 @@ BOOL APIENTRY DllMain( HANDLE hModule,
                      )
 {
     if (DLL_PROCESS_ATTACH==ul_reason_for_call) {
-
-        Device = OPOpen();
-
-        if (INVALID_HANDLE_VALUE==Device) {
-            return FALSE;
-        }
-
+        DisableThreadLibraryCalls(hModule);
     }
     return TRUE;
+}
+
+BOOL OpenDevice(IN ULONG Port)
+{
+    LONG PortId=-1;
+
+    if (NULL!=Device)
+        return TRUE;
+
+#if DBG
+    __debugbreak();
+#endif
+
+    //
+    // Guess which device to open. Currnt map:
+    // 0x378 - 0
+    // 0x278 - 1
+    //
+
+    if ( (Port>=0x378) && (Port<(0x378+4)) ) {
+        PortId = 0;
+        DeviceBase = 0x378;
+    }
+    if ( (Port>=0x278) && (Port<(0x278+4)) ) {
+        PortId = 1;
+        DeviceBase = 0x278;
+    }
+
+    Device=PPOpen(PortId);
+
+    return (NULL!=Device);
 }
 
 
 UCHAR WINAPI DlPortReadPortUchar(IN ULONG Port)
 {
-    OP_IOCTL_READ_BYTE  rb;
-    DWORD   dwTransferred;
-    UCHAR   Value=0;
+    UCHAR Value;
+    ULONG Offset;
 
-    rb.Address = (USHORT) Port;
+    if (FALSE==OpenDevice(Port)) {
+        return 0;
+    }
 
-    DeviceIoControl(Device,IOCTL_OP_IOCTL_READ_BYTE,&rb,sizeof(rb),&Value,sizeof(Value),&dwTransferred,NULL);
+    Offset = Port - DeviceBase;
+
+    switch(Offset)
+    {
+    case PP_OFFSET_STATUS:
+        PPRead(Device,&Value);
+        break;
+    case PP_OFFSET_CONTROL:
+        Value = CtrlShadow;
+        break;
+    case PP_OFFSET_DATA:
+        Value = DataShadow;
+        break;
+    default:
+        Value = 0;
+        break;
+    }
 
     return Value;
 }
 
 VOID WINAPI DlPortWritePortUchar(IN ULONG Port,IN UCHAR Value)
 {
-    OP_IOCTL_WRITE_BYTE  wb;
-    DWORD   dwTransferred;
+    ULONG Offset;
 
-    wb.Address = (USHORT) Port;
-    wb.Value = Value;
+    if (FALSE==OpenDevice(Port)) {
+        return;
+    }
 
-    DeviceIoControl(Device,IOCTL_OP_IOCTL_WRITE_BYTE,&wb,sizeof(wb),NULL,0,&dwTransferred,NULL);
+    Offset = Port - DeviceBase;
+
+    switch(Offset)
+    {
+    case PP_OFFSET_DATA:
+        PPWrite(Device, PP_OFFSET_DATA ,Value);
+        DataShadow = Value;
+        break;
+    case PP_OFFSET_CONTROL:
+        PPWrite(Device, PP_OFFSET_CONTROL ,Value);
+        CtrlShadow = Value;
+        break;
+    default:
+        break;
+    }
 }
 

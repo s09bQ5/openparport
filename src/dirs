@@ -1,4 +1,4 @@
 DIRS=\
-	driver \
 	ppdev \
+        paraccel \
 	dlportio \

@@ -17,24 +17,29 @@ echo \objchk_w2K_x86\		>> %TEMP%\nojunk.txt
 echo \buildfre_w2K_x86.		>> %TEMP%\nojunk.txt
 echo \buildCHK_w2K_x86.		>> %TEMP%\nojunk.txt
 
+echo \wdr\			>> %TEMP%\nojunk.txt
+
 mkdir %DROP%
 del /q /s %DROP%\*
 
 mkdir %DROP%\doc
 xcopy .\doc\*.rtf %DROP%\doc
 
-mkdir %DROP%\bin
-xcopy .\src\dlportio\%3\*.dll %DROP%\bin
-xcopy .\src\inf\* %DROP%\bin
-xcopy .\src\driver\%3\*.sys %DROP%\bin
-
-
 mkdir %DROP%\include
 xcopy /s /exclude:%TEMP%\nojunk.txt .\src\include\* %DROP%\include
 
 mkdir %DROP%\lib
-xcopy .\src\dlportio\%3\*.lib %DROP%\lib
 xcopy .\src\ppdev\%3\*.lib %DROP%\lib
+
+mkdir misc
+
+mkdir %DROP%\misc\paraccel
+xcopy .\src\paraccel\driver\%3\*.sys %DROP%\misc\paraccel
+xcopy .\src\paraccel\installer\%3\*.exe %DROP%\misc\paraccel
+xcopy .\src\paraccel\*.rtf %DROP%\misc\paraccel
+
+mkdir %DROP%\misc\dlportio
+xcopy .\src\dlportio\%3\*.dll %DROP%\misc\dlportio
 
 mkdir %DROP%\src
 xcopy /s /exclude:%TEMP%\nojunk.txt .\src\* %DROP%\src
